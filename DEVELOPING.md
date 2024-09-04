@@ -28,6 +28,13 @@ To install the Xcode Command Line Tools, first install and run Xcode. Then run:
 xcode-select --install
 ```
 
+If you are on Xcode 16.0 or later, `swift-format` is pre-installed. But if you are on an earlier
+version, you can install it manually with brew.
+
+```sh
+brew install swift-format
+```
+
 Install `bats-core` and `jq` for local testing:
 
 ```sh
