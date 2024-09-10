@@ -5,12 +5,14 @@ import OpenTelemetryApi
 private let metricKitInstrumentationName = "@honeycombio/instrumentation-metric-kit"
 
 class MetricKitSubscriber: NSObject, MXMetricManagerSubscriber {
+    @available(macOS, unavailable)
     func didReceive(_ payloads: [MXMetricPayload]) {
         for payload in payloads {
             reportMetrics(payload: payload)
         }
     }
 
+    @available(macOS 12.0, *)
     @available(iOS 14.0, *)
     func didReceive(_ payloads: [MXDiagnosticPayload]) {
         for payload in payloads {

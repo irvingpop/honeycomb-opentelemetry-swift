@@ -1,9 +1,9 @@
 
 lint:
-	swift-format lint --strict --recursive Sources/ Tests/
+	swift-format lint --strict --recursive .
 
 format:
-	swift-format format --in-place --recursive Sources/ Tests/
+	swift-format format --in-place --recursive .
 
 #: cleans up smoke test output
 clean-smoke-tests:
