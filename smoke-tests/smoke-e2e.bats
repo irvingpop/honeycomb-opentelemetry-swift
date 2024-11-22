@@ -181,4 +181,24 @@ mk_diag_attr() {
 "main view"
 "nested expensive text"
 "nested expensive view"'
+
+}
+
+@test "UIViewController attributes are correct" {
+    result=$(attributes_from_span_named "@honeycombio/instrumentation-uikit" viewDidAppear | \
+         jq "select (.key == \"className\")" | \
+         jq "select (.value.stringValue == \"UIViewController\").value.stringValue")
+    assert_equal "$result" '"UIViewController"'
+
+        result=$(attributes_from_span_named "@honeycombio/instrumentation-uikit" viewDidDisappear | \
+         jq "select (.key == \"className\")" | \
+         jq "select (.value.stringValue == \"UIViewController\").value.stringValue")
+    assert_equal "$result" '"UIViewController"'
+}
+
+@test "UITabView attributes are correct" {
+    result=$(attributes_from_span_named "@honeycombio/instrumentation-uikit" viewDidAppear | \
+         jq "select (.key == \"className\")" | \
+         jq "select (.value.stringValue == \"SwiftUI.UIKitTabBarController\").value.stringValue" | uniq -c)
+    assert_equal "$result" '   5 "SwiftUI.UIKitTabBarController"'
 }
