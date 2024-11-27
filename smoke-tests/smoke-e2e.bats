@@ -90,7 +90,8 @@ mk_attr() {
 
   result=$(attributes_from_span_named $scope $span | jq .key | sort | uniq)
 
-   assert_equal "$result" '"signpost.category"
+   assert_equal "$result" '"screen.name"
+"signpost.category"
 "signpost.count"
 "signpost.cpu_time"
 "signpost.hitch_time_ratio"
@@ -200,5 +201,21 @@ mk_diag_attr() {
     result=$(attributes_from_span_named "@honeycombio/instrumentation-uikit" viewDidAppear | \
          jq "select (.key == \"className\")" | \
          jq "select (.value.stringValue == \"SwiftUI.UIKitTabBarController\").value.stringValue" | uniq -c)
-    assert_equal "$result" '   5 "SwiftUI.UIKitTabBarController"'
+    assert_equal "$result" '   6 "SwiftUI.UIKitTabBarController"'
+}
+
+@test "Navigation spans are correct" {
+    result=$(attribute_for_span_key "@honeycombio/instrumentation-navigation" Navigation "screen.name" string \
+    | sort \
+    | uniq -c)
+    root_count=$(echo "$result" | grep "\[\]")
+    yosemite_count=$(echo "$result" | grep "Yosemite")
+    
+    assert_equal "$root_count" '   1 "[]"'
+    assert_equal "$yosemite_count" '   1 "[{\"name\":\"Yosemite\"}]"'
+}
+
+@test "Navigation attributes are correct" {
+    result=$(attribute_for_span_key "@honeycombio/instrumentation-view" "View Render" "screen.name" string | uniq)
+    assert_equal "$result" '"View Instrumentation"'
 }
