@@ -75,16 +75,34 @@ To manually send a span:
 
 The following auto-instrumentation libraries are automatically included:
 * [MetricKit](https://developer.apple.com/documentation/metrickit) data is automatically collected.
+* Some UIKit controls are automatically instrumented as described below.
 
 ### UIKit Instrumentation
 
+#### Navigation
+
 UIKit views will automatically be instrumented, emitting `viewDidAppear` and `viewDidDisappear` events. Both have the following attributes:
 
-- `title` - Title of the view, if provided.
-- `nibName` - The name of the view controller's nib file, if one was specified.
-- `animated` - true if the transition to/from this view is animated, false if it isn't.
-- `className` - name of the swift/objective-c class this view 
+- `view.title` - Title of the view controller, if provided.
+- `view.nibName` - The name of the view controller's nib file, if one was specified.
+- `view.animated` - true if the transition to/from this view is animated, false if it isn't.
+- `view.class` - name of the swift/objective-c class this view 
 controller has.
+
+#### Interaction
+
+Various touch events are instrumented, such as:
+* `Touch Began` - A touch started
+* `Touch Ended` - A touch ended
+* `click` - A "click". This is currently ony instrumented for `UIButton`s.
+
+These events may have the following attributes. In the case of name attributes, we may walk up the view hierarchy to find a valid entry.
+* `view.class`: e.g. `"UIButton"`
+* `view.accessibilityIdentifier`, The `accessibilityIdentifier` property of a `UIView`, e.g. `"accessibleButton"`
+* `view.accessibilityLabel` - The `accessibilityLabel` property of a `UIView`, e.g. `"Accessible Button"`
+* `view.currentTitle` - The `currentTitle` property of a `UIButton`.
+* `view.titleLabel.text` - The `text` of a `UIButton`'s `titleLabel`, e.g. `"Accessible Button"`
+* `view.name`: The "best" available name of the view, given the other identifiers, e.g. `"accessibleButton"`
 
 ## Manual Instrumentation
 ### SwiftUI View Instrumentation
@@ -108,12 +126,12 @@ This will measure and emit instrumentation for your View's render times, ex:
 Specifically, it will emit 2 kinds of span for each view that is wrapped:
 
 `View Render` spans encompass the entire rendering process, from initialization to appearing on screen. They include the following attributes:
-- `ViewName` (string): the name passed to `HoneycombInstrumentedView`
-- `RenderDuration` (double): amount of time to spent initializing the contents of `HoneycombInstrumentedView`
-- `TotalDuration` (double): amount of time from when `HoneycombInstrumentedView.body()` is called to when the contents appear on screen
+- `view.name` (string): the name passed to `HoneycombInstrumentedView`
+- `view.renderDuration` (double): amount of time to spent initializing the contents of `HoneycombInstrumentedView`
+- `view.totalDuration` (double): amount of time from when `HoneycombInstrumentedView.body()` is called to when the contents appear on screen
 
 `View Body` spans encompass just the `body()` call of `HoneycombInstrumentedView, and include the following attributes:
-- `ViewName` (string): the name passed to `HoneycombInstrumentedView` 
+- `view.name` (string): the name passed to `HoneycombInstrumentedView` 
 
 ### SwiftUI Navigation Instrumentation
 iOS 16 introduced two [new Navigation types](https://developer.apple.com/documentation/swiftui/migrating-to-new-navigation-types) that replace the now-deprecated [NavigationView](https://developer.apple.com/documentation/swiftui/navigationview).
