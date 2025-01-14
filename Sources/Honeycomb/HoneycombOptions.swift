@@ -1,10 +1,8 @@
 import Foundation
+import OpenTelemetrySdk
 
 internal let runtimeVersion = ProcessInfo().operatingSystemVersionString
-// TODO: This can't be set programmatically for now, because it is incorrect upstream.
-// We should fix this here:
-// https://github.com/open-telemetry/opentelemetry-swift/blob/32ea291d791f5a0652630fc176b73d1639074046/Sources/OpenTelemetrySdk/Version.swift#L9
-internal let otlpVersion = "1.10.1"
+internal let otlpVersion = Resource.OTEL_SWIFT_SDK_VERSION
 
 // Constants for keys and defaults in HoneycombOptions.
 
@@ -160,7 +158,7 @@ extension Dictionary {
 /// https://github.com/honeycombio/specs/blob/main/specs/otel-sdk-distro.md
 /// https://opentelemetry.io/docs/languages/sdk-configuration/general/
 /// https://opentelemetry.io/docs/languages/sdk-configuration/otlp-exporter/
-public class HoneycombOptions {
+public struct HoneycombOptions {
     let tracesApiKey: String
     let metricsApiKey: String
     let logsApiKey: String
@@ -189,59 +187,6 @@ public class HoneycombOptions {
     let tracesProtocol: OTLPProtocol
     let metricsProtocol: OTLPProtocol
     let logsProtocol: OTLPProtocol
-
-    init(
-        tracesApiKey: String,
-        metricsApiKey: String,
-        logsApiKey: String,
-        dataset: String?,
-        metricsDataset: String?,
-        tracesEndpoint: String,
-        metricsEndpoint: String,
-        logsEndpoint: String,
-        sampleRate: Int,
-        debug: Bool,
-        serviceName: String,
-        resourceAttributes: [String: String],
-        tracesSampler: String,
-        tracesSamplerArg: String?,
-        propagators: String,
-        tracesHeaders: [String: String],
-        metricsHeaders: [String: String],
-        logsHeaders: [String: String],
-        tracesTimeout: TimeInterval,
-        metricsTimeout: TimeInterval,
-        logsTimeout: TimeInterval,
-        tracesProtocol: OTLPProtocol,
-        metricsProtocol: OTLPProtocol,
-        logsProtocol: OTLPProtocol
-    ) {
-
-        self.tracesApiKey = tracesApiKey
-        self.metricsApiKey = metricsApiKey
-        self.logsApiKey = logsApiKey
-        self.dataset = dataset
-        self.metricsDataset = metricsDataset
-        self.tracesEndpoint = tracesEndpoint
-        self.metricsEndpoint = metricsEndpoint
-        self.logsEndpoint = logsEndpoint
-        self.sampleRate = sampleRate
-        self.debug = debug
-        self.serviceName = serviceName
-        self.resourceAttributes = resourceAttributes
-        self.tracesSampler = tracesSampler
-        self.tracesSamplerArg = tracesSamplerArg
-        self.propagators = propagators
-        self.tracesHeaders = tracesHeaders
-        self.metricsHeaders = metricsHeaders
-        self.logsHeaders = logsHeaders
-        self.tracesTimeout = tracesTimeout
-        self.metricsTimeout = metricsTimeout
-        self.logsTimeout = logsTimeout
-        self.tracesProtocol = tracesProtocol
-        self.metricsProtocol = metricsProtocol
-        self.logsProtocol = logsProtocol
-    }
 
     public class Builder {
         private var apiKey: String? = nil
