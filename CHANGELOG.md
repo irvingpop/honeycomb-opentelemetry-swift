@@ -2,9 +2,9 @@ Honeycomb OpenTelemetry SDK Changelog
 
 ## v.Next
 
-## 0.0.5-alpha
+### New Features
 
-* Add a `setSpanProcessor()` function to `HoneycombOptions` builder to allow clients to supply custom span processors.
+* Package is now available on Cocoapods.
 
 ## 0.0.4-alpha
 
