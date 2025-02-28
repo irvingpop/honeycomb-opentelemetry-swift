@@ -2,8 +2,14 @@ Honeycomb OpenTelemetry SDK Changelog
 
 ## v.Next
 
+### Fixes
+
 * Update instrumentation names to use reverse url notation (`io.honeycomb.*`) instead of `@honeycombio/instrumentation-*` notation. 
+
+### New Features
+
 * Package is now available on Cocoapods.
+* Add new options to enable/disable built-in auto-instrumentation.
 
 ## 0.0.5-alpha
 
