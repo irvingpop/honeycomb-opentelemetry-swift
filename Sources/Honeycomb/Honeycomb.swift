@@ -206,6 +206,9 @@ public class Honeycomb {
         if options.touchInstrumentationEnabled {
             installWindowInstrumentation()
         }
+        if options.unhandledExceptionInstrumentationEnabled {
+            HoneycombUncaughtExceptionHandler.initializeUnhandledExceptionInstrumentation()
+        }
 
         if #available(iOS 13.0, macOS 12.0, *) {
             if options.metricKitInstrumentationEnabled {
