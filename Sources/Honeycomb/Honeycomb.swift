@@ -1,3 +1,4 @@
+import BaggagePropagationProcessor
 import Foundation
 import MetricKit
 import OpenTelemetryApi
@@ -113,7 +114,7 @@ public class Honeycomb {
             spanProcessor.addSpanProcessor(clientSpanProcessor)
         }
 
-        let baggageSpanProcessor = HoneycombBaggageSpanProcessor(filter: { _ in true })
+        let baggageSpanProcessor = BaggagePropagationProcessor(filter: { _ in true })
 
         let tracerProvider = TracerProviderBuilder()
             .add(spanProcessor: spanProcessor)
