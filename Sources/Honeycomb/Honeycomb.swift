@@ -209,12 +209,14 @@ public class Honeycomb {
         if options.urlSessionInstrumentationEnabled {
             installNetworkInstrumentation(options: options)
         }
-        if options.uiKitInstrumentationEnabled {
-            installUINavigationInstrumentation()
-        }
-        if options.touchInstrumentationEnabled {
-            installWindowInstrumentation()
-        }
+        #if canImport(UIKit)
+            if options.uiKitInstrumentationEnabled {
+                installUINavigationInstrumentation()
+            }
+            if options.touchInstrumentationEnabled {
+                installWindowInstrumentation()
+            }
+        #endif
         if options.unhandledExceptionInstrumentationEnabled {
             HoneycombUncaughtExceptionHandler.initializeUnhandledExceptionInstrumentation()
         }
@@ -342,7 +344,7 @@ public class Honeycomb {
             .emit()
     }
 
-    @available(iOS 16.0, macOS 12.0, *)
+    @available(iOS 16.0, macOS 13.0, *)
     public static func setCurrentScreen(path: NavigationPath) {
         HoneycombNavigationProcessor.shared.reportNavigation(path: path)
     }
