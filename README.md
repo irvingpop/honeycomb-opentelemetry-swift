@@ -310,11 +310,19 @@ struct SampleNavigationView: View {
 }
 ```  
 
-Whenever the `path` variable changes, this View Modifier will emit a span with the name `Navigation`. This span will contain the following attributes:
+Whenever the `path` variable changes, this View Modifier will emit a span with the name `NavigationTo`. This span will contain the following attributes:
 
 - `screen.name` (string): the full navigation path when the span is emitted. If the path passed to the view modifier is not `Encodable` (ie. if you're using a `NavigationPath` and have stored a value that does not conform to the `Codable` protocol), then this attribute will have the value `<unencodable path>`.
+- `navigation.trigger`: Normally `navigation`. May also be `appDidBecomeActive` if the app moves into the foreground and still has navigation context. 
 
-When using other kinds of navigation (ex. a `TabView` or `NavigationSplitView`), we offer a utility function `Honeycomb.setCurrentScreen(path: Any)`. This will immediately emit a `Navigation` span as documented above. As with the View Modifier form, if the `path` is `Encodable`, that will be included as an attribute on the span. Otherwise the `screen.name` attribute on the span will have the value `<unencodable path>`.
+If coming from another screen, we will also emit a `NavigationFrom` span with the following attributes:
+- `screen.name` (string): the name of the previous screen.
+- `screen.active.time` (double): time in seconds spent on that previous screen.
+- `navigation.trigger`: Normally `navigation`. May also be `appWillResignActive`, `appDidEnterBackground`, or `appWillTerminate` if the navigation is due to the app closing. 
+
+Note that navigation spans due to application lifecycle changes are only available on platforms with UIKit.
+
+When using other kinds of navigation (ex. a `TabView` or `NavigationSplitView`), we offer a utility function `Honeycomb.setCurrentScreen(path: Any)`. This will immediately emit `NavigationTo` and `NavigationFrom` spans as documented above. As with the View Modifier form, if the `path` is `Encodable`, that will be included as an attribute on the span. Otherwise the `screen.name` attribute on the span will have the value `<unencodable path>`.
 
 This function can be called from a view's `onAppear`, or inside a button's `action`, or wherever you decide to manage your navigation.
 
@@ -348,7 +356,7 @@ struct ContentView: View {
 }
 ```
 
-Regardless of which form you use, either helper will keep track of the most recent path value, and our instrumentation will sets up a SpanProcessor that will automatically propage that value as a `screen.name` attribute onto any other spans.
+Regardless of which form you use, either helper will keep track of the most recent path value, and our instrumentation includes a SpanProcessor that will automatically propage that value as a `screen.name` attribute onto any other spans.
 
 This means that if you miss a navigation, you will see spans attributed to the wrong screen. For example:
 ```swift
@@ -372,6 +380,10 @@ struct ContentView: View {
 ``` 
 
 In this case, since View B never reports the navigation, if the user navigates to `View A` and then to `View B`, any spans emitted from `View B` will still report `screen.name: "View A"`.
+
+Both helpers also accept 2 optional parameters: `prefix: String` and `reason: String`:
+- If the `prefix` parameter is provided, it will be prepended to the supplied path. This is useful to disambiguate between two different NavigationStacks within the same application.
+- If the `reason` parameter is provided, it will be included as `navigation.trigger` on the `NavigateTo` and `NavigateFrom` spans. See included attributes above for more details on this attribute. 
 
 ### Manual Error Logging
 

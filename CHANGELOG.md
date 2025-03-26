@@ -2,6 +2,15 @@ Honeycomb OpenTelemetry SDK Changelog
 
 ## v.Next
 
+### New Features
+
+* Enhanced navigation instrumentation:  
+  * Now emits paired `NavigationTo` and `NavigationFrom` spans for better visibility into screen transitions and time spent on screens.
+  * Now accepts optional `reason: String` param for tagging navigations.
+  * Now accepts optional `prefix: String` param to allow clients to disambiguate between different NavigationStacks within a singular application.
+  * Fix: NavigationStack root paths now get serialized as `/` instead of `[]`.
+  * Fix: Navigation instrumentation now correctly identifies the `screen.name` attribute for paths, instead of using the full path.
+
 ### Fixes
 
 * Wait for flush to avoid missed crash logs
