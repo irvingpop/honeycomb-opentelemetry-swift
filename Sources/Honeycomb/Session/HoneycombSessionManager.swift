@@ -50,7 +50,7 @@ class HoneycombSessionManager {
         return elapsedTime >= sessionLifetime
     }
 
-    var sessionId: String {
+    var session: HoneycombSession {
         return lock.withLock {
             // If there is no current session make a new one
             if self.currentSession == nil {
@@ -83,13 +83,17 @@ class HoneycombSessionManager {
                 self.currentSession = newSession
             }
 
-            guard let currentSession = self.currentSession else {
-                return ""
-            }
+            // The previous block guarantees currentSession isn't nil.
+            let currentSession: HoneycombSession = self.currentSession!
+
             // Always return the current session's id
             sessionStorage.save(session: currentSession)
-            return currentSession.id
+            return currentSession
         }
+    }
+
+    var sessionId: String {
+        return session.id
     }
 
     private func onSessionStarted(newSession: HoneycombSession, previousSession: HoneycombSession?)
