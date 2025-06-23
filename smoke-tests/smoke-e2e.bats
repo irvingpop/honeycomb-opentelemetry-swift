@@ -49,7 +49,12 @@ teardown_file() {
 
 @test "SDK sends correct resource attributes" {
   result=$(resource_attributes_received | jq ".key" | sort | uniq)
-  assert_equal "$result" '"device.id"
+  assert_equal "$result" '"app.bundle.executable"
+"app.bundle.shortVersionString"
+"app.bundle.version"
+"app.debug.binaryName"
+"app.debug.buildUUID"
+"device.id"
 "device.model.identifier"
 "honeycomb.distro.runtime_version"
 "honeycomb.distro.version"
