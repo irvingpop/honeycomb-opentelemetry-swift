@@ -2,9 +2,15 @@ Honeycomb OpenTelemetry SDK Changelog
 
 ## v.Next
 
+### 0.0.14
+
 ### New Features
 
 * Include human-readable exception info in MetricKit crash logs.
+
+### Fixes
+
+* fix: update `app.debug.buildUUID` attribute to `app.debug.build_uuid`
 
 ## 0.0.13
 
