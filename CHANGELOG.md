@@ -2,6 +2,10 @@ Honeycomb OpenTelemetry SDK Changelog
 
 ## v.Next
 
+### New Features
+
+* Add Cocoapods support.
+
 ### 0.0.14
 
 ### New Features
