@@ -37,6 +37,18 @@ private func createKeyValueList(_ dict: [String: String]) -> [(String, String)] 
 
 public class Honeycomb {
     static private var sessionManager: HoneycombSessionManager? = nil
+    /// The OpenTelemetry Resource containing service information, custom attributes, and telemetry metadata.
+    ///
+    /// This property initially returns the default OpenTelemetry resource with system information.
+    /// After calling `configure(options:)`, it returns the fully configured resource including
+    /// custom resource attributes and service configuration.
+    ///
+    /// Use this property to inspect resource attributes for debugging or validation purposes:
+    /// ```swift
+    /// let resource = Honeycomb.resource
+    /// print("Service name: \(resource.attributes["service.name"]?.description ?? "unknown")")
+    /// ```
+    public private(set) static var resource: Resource = DefaultResources().get()
 
     #if canImport(MetricKit) && !os(tvOS) && !os(macOS)
         static private let metricKitSubscriber = MetricKitSubscriber()
@@ -70,7 +82,7 @@ public class Honeycomb {
             headers: createKeyValueList(options.logsHeaders)
         )
 
-        let resource = DefaultResources().get()
+        resource = DefaultResources().get()
             .merging(other: Resource(attributes: createAttributeDict(options.resourceAttributes)))
             .merging(other: Resource(attributes: createAttributeDict(getAppResources())))
 
