@@ -17,8 +17,8 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/open-telemetry/opentelemetry-swift-core.git",
-            exact: "2.2.0"
+            url: "https://github.com/irvingpop/opentelemetry-swift-core.git",
+            branch: "irving/batchspan_dispatch_crash_fix"
         ),
         .package(
             url: "https://github.com/open-telemetry/opentelemetry-swift.git",

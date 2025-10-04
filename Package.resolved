@@ -1,5 +1,5 @@
 {
-  "originHash" : "76dae4f38c3114bc56182aeea1ae58d021e6b12c9a5a5fe3986a6cc9352d052b",
+  "originHash" : "75690987b43d45541c4d067a0de333bc4315ae2e99e4e503a7ca790990504c74",
   "pins" : [
     {
       "identity" : "grpc-swift",
@@ -22,10 +22,10 @@
     {
       "identity" : "opentelemetry-swift-core",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/open-telemetry/opentelemetry-swift-core.git",
+      "location" : "https://github.com/irvingpop/opentelemetry-swift-core.git",
       "state" : {
-        "revision" : "fd787757decabfa93319cc3c04f03a49e0cf40b6",
-        "version" : "2.2.0"
+        "branch" : "irving/batchspan_dispatch_crash_fix",
+        "revision" : "1fdc1d985481724a6a5cf95fbab4e6a24da08dfc"
       }
     },
     {
