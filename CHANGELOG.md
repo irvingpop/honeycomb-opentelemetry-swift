@@ -2,6 +2,8 @@ Honeycomb OpenTelemetry SDK Changelog
 
 ## v.Next
 
+* feat: add device.manufacturer and device.model.name attributes
+
 ## 2.1.3
 
 * fix: Make HoneycombNavigationPathSpanProcessor threadsafe.
